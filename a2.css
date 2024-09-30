@@ -1,0 +1,154 @@
+#menu_text {
+  margin: 0;
+  padding: 80px;
+  background-color:  #1abc9c;
+  text-align: center;
+}
+
+nav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+nav a{
+  padding: 14px 20px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+}
+
+nav a:hover {
+  background-color: #DDD;
+  color: #333;
+}
+
+nav a.left {
+  float: left;
+}
+
+nav a.right {
+  float: right;
+}
+
+div#flex_container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+div#flex_left {
+  flex: 33%;
+  background-color: #f1f1f1;
+	padding: 10px 20px;
+}
+
+div#flex_right {
+  flex: 70%;
+	padding: 10px 20px;
+}
+
+div#flex_container_two {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div#one {
+  flex: 25%;
+	padding: 10px 20px;
+}
+
+div#two {
+  flex: 25%;
+	padding: 10px 20px;
+}
+
+div#three {
+  flex: 25%;
+	padding: 10px 20px;
+}
+
+div#four {
+  flex: 25%;
+	padding: 10px 20px;
+}
+
+div#five {
+  flex: 25%;
+	padding: 10px 20px;
+}
+
+div#six {
+  flex: 25%;
+	padding: 10px 20px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.game_name {
+  text-align: center;
+}
+
+footer > a {
+  color: white;
+}
+
+table {
+  border-style: solid;
+}
+
+/* Styling the table */
+table {
+	border-collapse: collapse;
+}
+
+table td, table th {
+	border: 1px solid #DDD;
+	padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+@media(max-width: 800px) {
+  #flex_container {
+    flex-wrap: wrap;
+  }
+  #left_side {
+    flex: 100%;
+  }
+  #right_side {
+    flex: 100%;
+  }
+  table {
+    width: 100%;
+  }
+}
+
+@media(max-width: 800px) {
+  #flex_container {
+    flex-wrap: wrap;
+  }
+  #left_side {
+    flex: 100%;
+  }
+  #right_side {
+    flex: 100%;
+  }
+  table {
+    width: 100%;
+  }
+}
