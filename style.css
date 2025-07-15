@@ -8,6 +8,14 @@ body {
     overflow: hidden;
 }
 
+html, body {
+    touch-action: manipulation; /* Ngăn zoom double-tap và delay touch */
+    -ms-touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior: none;
+}
+
 canvas {
     width: 100%;
     max-width: 100%;
