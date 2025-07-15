@@ -1,6 +1,15 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// Phát hiện nếu thiết bị là mobile
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+// Hiện nút điều khiển nếu là mobile
+const mobileControls = document.getElementById("mobile-controls");
+if (isMobile) {
+    mobileControls.classList.remove("hidden");
+}
+
 const player = {
     x: 50,
     y: canvas.height / 2 - 25,
@@ -15,26 +24,30 @@ const enemies = [];
 let score = 0;
 let gameOver = false;
 
-// Điều khiển
 const keys = {};
 
-// Sự kiện bàn phím
-document.addEventListener("keydown", (e) => {
-    keys[e.key] = true;
-    if (e.key === " ") shoot();
-});
-document.addEventListener("keyup", (e) => {
-    keys[e.key] = false;
-});
+// PC: dùng bàn phím
+if (!isMobile) {
+    document.addEventListener("keydown", (e) => {
+        keys[e.key] = true;
+        if (e.key === " ") shoot();
+    });
 
-// Nút UI (mobile)
-document.getElementById("btn-up").addEventListener("touchstart", () => keys["ArrowUp"] = true);
-document.getElementById("btn-up").addEventListener("touchend", () => keys["ArrowUp"] = false);
+    document.addEventListener("keyup", (e) => {
+        keys[e.key] = false;
+    });
+}
 
-document.getElementById("btn-down").addEventListener("touchstart", () => keys["ArrowDown"] = true);
-document.getElementById("btn-down").addEventListener("touchend", () => keys["ArrowDown"] = false);
+// Mobile: dùng nút bấm
+if (isMobile) {
+    document.getElementById("btn-up").addEventListener("touchstart", () => keys["ArrowUp"] = true);
+    document.getElementById("btn-up").addEventListener("touchend", () => keys["ArrowUp"] = false);
 
-document.getElementById("btn-shoot").addEventListener("touchstart", shoot);
+    document.getElementById("btn-down").addEventListener("touchstart", () => keys["ArrowDown"] = true);
+    document.getElementById("btn-down").addEventListener("touchend", () => keys["ArrowDown"] = false);
+
+    document.getElementById("btn-shoot").addEventListener("touchstart", shoot);
+}
 
 function shoot() {
     bullets.push({
@@ -62,14 +75,17 @@ function spawnEnemy() {
 function update() {
     if (gameOver) return;
 
+    // Di chuyển người chơi
     if (keys["ArrowUp"] && player.y > 0) player.y -= player.speed;
     if (keys["ArrowDown"] && player.y + player.height < canvas.height) player.y += player.speed;
 
+    // Di chuyển đạn
     bullets.forEach((b, i) => {
         b.x += b.speed;
         if (b.x > canvas.width) bullets.splice(i, 1);
     });
 
+    // Di chuyển kẻ địch
     enemies.forEach((e, ei) => {
         e.x -= e.speed;
         if (e.x + e.width < 0) enemies.splice(ei, 1);
@@ -141,3 +157,4 @@ function gameLoop() {
 }
 
 gameLoop();
+
