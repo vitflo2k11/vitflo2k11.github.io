@@ -17,6 +17,8 @@ let gameOver = false;
 
 // Điều khiển
 const keys = {};
+
+// Sự kiện bàn phím
 document.addEventListener("keydown", (e) => {
     keys[e.key] = true;
     if (e.key === " ") shoot();
@@ -24,6 +26,15 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
     keys[e.key] = false;
 });
+
+// Nút UI (mobile)
+document.getElementById("btn-up").addEventListener("touchstart", () => keys["ArrowUp"] = true);
+document.getElementById("btn-up").addEventListener("touchend", () => keys["ArrowUp"] = false);
+
+document.getElementById("btn-down").addEventListener("touchstart", () => keys["ArrowDown"] = true);
+document.getElementById("btn-down").addEventListener("touchend", () => keys["ArrowDown"] = false);
+
+document.getElementById("btn-shoot").addEventListener("touchstart", shoot);
 
 function shoot() {
     bullets.push({
@@ -51,24 +62,18 @@ function spawnEnemy() {
 function update() {
     if (gameOver) return;
 
-    // Di chuyển người chơi
     if (keys["ArrowUp"] && player.y > 0) player.y -= player.speed;
     if (keys["ArrowDown"] && player.y + player.height < canvas.height) player.y += player.speed;
 
-    // Di chuyển đạn
     bullets.forEach((b, i) => {
         b.x += b.speed;
         if (b.x > canvas.width) bullets.splice(i, 1);
     });
 
-    // Di chuyển kẻ địch
     enemies.forEach((e, ei) => {
         e.x -= e.speed;
-        if (e.x + e.width < 0) {
-            enemies.splice(ei, 1);
-        }
+        if (e.x + e.width < 0) enemies.splice(ei, 1);
 
-        // Va chạm với người chơi
         if (
             e.x < player.x + player.width &&
             e.x + e.width > player.x &&
@@ -78,7 +83,6 @@ function update() {
             gameOver = true;
         }
 
-        // Kiểm tra va chạm với đạn
         bullets.forEach((b, bi) => {
             if (
                 b.x < e.x + e.width &&
@@ -97,28 +101,23 @@ function update() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Vẽ người chơi
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
 
-    // Vẽ đạn
     bullets.forEach(b => {
         ctx.fillStyle = b.color;
         ctx.fillRect(b.x, b.y, b.width, b.height);
     });
 
-    // Vẽ kẻ địch
     enemies.forEach(e => {
         ctx.fillStyle = e.color;
         ctx.fillRect(e.x, e.y, e.width, e.height);
     });
 
-    // Vẽ điểm
     ctx.fillStyle = "white";
     ctx.font = "24px sans-serif";
     ctx.fillText("Score: " + score, 10, 30);
 
-    // Game Over
     if (gameOver) {
         ctx.fillStyle = "red";
         ctx.font = "48px sans-serif";
