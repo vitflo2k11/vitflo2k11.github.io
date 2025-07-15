@@ -17,5 +17,16 @@
     </div>
 
     <script src="game.js"></script>
+    <script>
+    let lastTouchTime = 0;
+    document.addEventListener("touchstart", function (e) {
+        const now = Date.now();
+        if (now - lastTouchTime <= 300) {
+            e.preventDefault();
+        }
+        lastTouchTime = now;
+    }, { passive: false });
+</script>
+
 </body>
 </html>
