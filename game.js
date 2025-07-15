@@ -98,6 +98,10 @@ function update() {
             gameOver = true;
         }
 
+        if (e.y + e.height >= HEIGHT) {
+            gameOver = true; // Thua nếu địch chạm đáy
+        }
+
         // Va chạm với đạn
         bullets.forEach((b, bi) => {
             if (
