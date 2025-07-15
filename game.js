@@ -1,18 +1,18 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Phát hiện nếu thiết bị là mobile
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-// Hiện nút điều khiển nếu là mobile
 const mobileControls = document.getElementById("mobile-controls");
 if (isMobile) {
     mobileControls.classList.remove("hidden");
 }
 
+const WIDTH = canvas.width;
+const HEIGHT = canvas.height;
+
 const player = {
-    x: 50,
-    y: canvas.height / 2 - 25,
+    x: WIDTH / 2 - 25,
+    y: HEIGHT - 70,
     width: 50,
     height: 50,
     speed: 5,
@@ -26,36 +26,31 @@ let gameOver = false;
 
 const keys = {};
 
-// PC: dùng bàn phím
 if (!isMobile) {
     document.addEventListener("keydown", (e) => {
         keys[e.key] = true;
         if (e.key === " ") shoot();
     });
-
     document.addEventListener("keyup", (e) => {
         keys[e.key] = false;
     });
-}
+} else {
+    document.getElementById("btn-left").addEventListener("touchstart", () => keys["ArrowLeft"] = true);
+    document.getElementById("btn-left").addEventListener("touchend", () => keys["ArrowLeft"] = false);
 
-// Mobile: dùng nút bấm
-if (isMobile) {
-    document.getElementById("btn-up").addEventListener("touchstart", () => keys["ArrowUp"] = true);
-    document.getElementById("btn-up").addEventListener("touchend", () => keys["ArrowUp"] = false);
-
-    document.getElementById("btn-down").addEventListener("touchstart", () => keys["ArrowDown"] = true);
-    document.getElementById("btn-down").addEventListener("touchend", () => keys["ArrowDown"] = false);
+    document.getElementById("btn-right").addEventListener("touchstart", () => keys["ArrowRight"] = true);
+    document.getElementById("btn-right").addEventListener("touchend", () => keys["ArrowRight"] = false);
 
     document.getElementById("btn-shoot").addEventListener("touchstart", shoot);
 }
 
 function shoot() {
     bullets.push({
-        x: player.x + player.width,
-        y: player.y + player.height / 2 - 5,
-        width: 10,
-        height: 5,
-        speed: 8,
+        x: player.x + player.width / 2 - 3,
+        y: player.y,
+        width: 6,
+        height: 10,
+        speed: 7,
         color: "white"
     });
 }
@@ -63,11 +58,11 @@ function shoot() {
 function spawnEnemy() {
     const size = 40;
     enemies.push({
-        x: canvas.width,
-        y: Math.random() * (canvas.height - size),
+        x: Math.random() * (WIDTH - size),
+        y: -size,
         width: size,
         height: size,
-        speed: 3,
+        speed: 2 + Math.random() * 2,
         color: "red"
     });
 }
@@ -76,20 +71,24 @@ function update() {
     if (gameOver) return;
 
     // Di chuyển người chơi
-    if (keys["ArrowUp"] && player.y > 0) player.y -= player.speed;
-    if (keys["ArrowDown"] && player.y + player.height < canvas.height) player.y += player.speed;
+    if (keys["ArrowLeft"] && player.x > 0) player.x -= player.speed;
+    if (keys["ArrowRight"] && player.x + player.width < WIDTH) player.x += player.speed;
 
-    // Di chuyển đạn
+    // Di chuyển đạn lên trên
     bullets.forEach((b, i) => {
-        b.x += b.speed;
-        if (b.x > canvas.width) bullets.splice(i, 1);
+        b.y -= b.speed;
+        if (b.y + b.height < 0) bullets.splice(i, 1);
     });
 
-    // Di chuyển kẻ địch
+    // Kẻ địch rơi xuống
     enemies.forEach((e, ei) => {
-        e.x -= e.speed;
-        if (e.x + e.width < 0) enemies.splice(ei, 1);
+        e.y += e.speed;
 
+        if (e.y > HEIGHT) {
+            enemies.splice(ei, 1);
+        }
+
+        // Va chạm với người chơi
         if (
             e.x < player.x + player.width &&
             e.x + e.width > player.x &&
@@ -99,6 +98,7 @@ function update() {
             gameOver = true;
         }
 
+        // Va chạm với đạn
         bullets.forEach((b, bi) => {
             if (
                 b.x < e.x + e.width &&
@@ -115,7 +115,7 @@ function update() {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
@@ -131,30 +131,29 @@ function draw() {
     });
 
     ctx.fillStyle = "white";
-    ctx.font = "24px sans-serif";
+    ctx.font = "20px sans-serif";
     ctx.fillText("Score: " + score, 10, 30);
 
     if (gameOver) {
         ctx.fillStyle = "red";
-        ctx.font = "48px sans-serif";
-        ctx.fillText("GAME OVER", canvas.width / 2 - 140, canvas.height / 2);
+        ctx.font = "36px sans-serif";
+        ctx.fillText("GAME OVER", WIDTH / 2 - 100, HEIGHT / 2);
     }
 }
 
-let enemySpawnCounter = 0;
+let enemyTimer = 0;
 function gameLoop() {
     update();
     draw();
 
     if (!gameOver) {
-        enemySpawnCounter++;
-        if (enemySpawnCounter > 60) {
+        enemyTimer++;
+        if (enemyTimer > 50) {
             spawnEnemy();
-            enemySpawnCounter = 0;
+            enemyTimer = 0;
         }
         requestAnimationFrame(gameLoop);
     }
 }
 
 gameLoop();
-
