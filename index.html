@@ -2,31 +2,31 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Game Bắn Súng Web</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Bắn Súng Dọc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <canvas id="gameCanvas" width="360" height="640"></canvas>
 
-    <!-- Điều khiển cho mobile -->
     <div id="mobile-controls" class="hidden">
-        <button id="btn-up">↑</button>
-        <button id="btn-down">↓</button>
+        <button id="btn-left">←</button>
+        <button id="btn-right">→</button>
         <button id="btn-shoot">Bắn</button>
     </div>
 
     <script src="game.js"></script>
-    <script>
-    let lastTouchTime = 0;
-    document.addEventListener("touchstart", function (e) {
-        const now = Date.now();
-        if (now - lastTouchTime <= 300) {
-            e.preventDefault();
-        }
-        lastTouchTime = now;
-    }, { passive: false });
-</script>
 
+    <!-- Ngăn double tap zoom -->
+    <script>
+        let lastTouchTime = 0;
+        document.addEventListener("touchstart", function (e) {
+            const now = Date.now();
+            if (now - lastTouchTime <= 300) {
+                e.preventDefault();
+            }
+            lastTouchTime = now;
+        }, { passive: false });
+    </script>
 </body>
 </html>
