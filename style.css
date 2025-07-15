@@ -9,8 +9,10 @@ body {
 }
 
 canvas {
+    width: 100%;
     max-width: 100%;
     height: auto;
+    aspect-ratio: 4 / 3; /* Giữ tỉ lệ 800x600 */
     border: 2px solid white;
     background-color: black;
 }
@@ -19,6 +21,8 @@ canvas {
     display: flex;
     gap: 12px;
     margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #mobile-controls.hidden {
@@ -26,13 +30,14 @@ canvas {
 }
 
 #mobile-controls button {
-    padding: 15px 25px;
-    font-size: 24px;
+    padding: 12px 20px;
+    font-size: 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #333;
     color: white;
     cursor: pointer;
+    min-width: 80px;
 }
 
 #mobile-controls button:active {
