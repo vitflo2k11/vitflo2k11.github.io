@@ -15,22 +15,26 @@ canvas {
     background-color: black;
 }
 
-#controls {
-    margin-top: 10px;
+#mobile-controls {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    margin-top: 10px;
 }
 
-#controls button {
-    padding: 15px 20px;
-    font-size: 20px;
+#mobile-controls.hidden {
+    display: none;
+}
+
+#mobile-controls button {
+    padding: 15px 25px;
+    font-size: 24px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #333;
     color: white;
     cursor: pointer;
 }
 
-#controls button:active {
+#mobile-controls button:active {
     background-color: #555;
 }
