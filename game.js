@@ -84,8 +84,9 @@ function update() {
     enemies.forEach((e, ei) => {
         e.y += e.speed;
 
-        if (e.y > HEIGHT) {
-            enemies.splice(ei, 1);
+        // THUA nếu địch chạm cạnh dưới màn hình
+        if (e.y + e.height >= HEIGHT) {
+            gameOver = true;
         }
 
         // Va chạm với người chơi
@@ -96,10 +97,6 @@ function update() {
             e.y + e.height > player.y
         ) {
             gameOver = true;
-        }
-
-        if (e.y + e.height >= HEIGHT) {
-            gameOver = true; // Thua nếu địch chạm đáy
         }
 
         // Va chạm với đạn
